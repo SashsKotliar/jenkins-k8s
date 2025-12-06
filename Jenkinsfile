@@ -2,10 +2,11 @@ pipeline {
   agent { 
     label "jenkins-builder" 
   } 
-  stages { \
+  stages { 
     stage('Build') { 
       steps { 
-        echo 'Building..' 
+        echo 'Building..'
+        checkout scm
       } 
     } 
     stage('Test') { 
