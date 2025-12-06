@@ -4,7 +4,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    credentialsId: 'github-ssh-key',
+                    credentialsId: 'github-credentials',
                     url: 'git@github.com:SashsKotliar/jenkins-k8s.git'
             }
         }
