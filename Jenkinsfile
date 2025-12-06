@@ -6,17 +6,18 @@ pipeline {
     stage('Build') { 
       steps { 
         echo 'Building..'
-        checkout scm
+	sh 'git -v'
       } 
     } 
     stage('Test') { 
       steps { 
         echo 'Testing..' 
-        sh 'git -v' 
+        sh 'docker -v'
       } 
     } 
     stage('Deploy') { 
-      steps { 
+      steps {
+	sh 'kubectl version' 
         echo 'Deploying....' 
       } 
     } 
