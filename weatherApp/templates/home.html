@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>WeatherApplication</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-image: url('https://cdn.pixabay.com/photo/2023/11/29/17/51/clouds-8420083_1280.jpg');
+             background-size: cover;
+             background-position: center;
+             background-repeat: no-repeat;
+             min-height: 100vh;">
+
+<div class="text-center d-flex justify-content-center align-items-center vh-100 flex-column">
+    <div class="p-4 bg-light rounded">		
+	    <h1 class="mb-5">Welcome to weather app!</h1>
+        <form action="/search" method="get" class="d-grid gap-2 mx-auto">
+            <input class="form-control form-control-lg text-center mb-5" type="text" name="location"
+                   placeholder="City/Country" required>
+            <button type="submit" class="btn btn-primary btn-lg">Check forecast</button>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

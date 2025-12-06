@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-pvc
+  namespace: devops
+spec:
+  storageClassName: efs-sc
+  accessModes: 
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+

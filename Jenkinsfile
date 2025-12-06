@@ -5,19 +5,16 @@ pipeline {
   stages { 
     stage('Build') { 
       steps { 
-        echo 'Building..'
-	sh 'git -v'
+	sh 'docker build -t sashak9/webapp:latest'
       } 
     } 
-    stage('Test') { 
+    stage('Push to dockerhub') { 
       steps { 
-        echo 'Testing..' 
-        sh 'docker -v'
+        echo 'Push to docker hub..' 
       } 
     } 
     stage('Deploy') { 
-      steps {
-	sh 'kubectl version' 
+      steps { 
         echo 'Deploying....' 
       } 
     } 

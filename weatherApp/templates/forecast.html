@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title class>WeatherForecast</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body style="background-image: url('https://cdn.pixabay.com/photo/2023/11/29/17/51/clouds-8420083_1280.jpg');
+             background-size: cover;
+             background-position: center;
+             background-repeat: no-repeat;
+             min-height: 100vh;">
+
+<div class="p-4 text-center d-flex justify-content-center align-items-center vh-100 flex-column">
+    <div class="bg-light p-4 rounded">
+        <h1 class="mb-3 bg-">Weather forecast</h1>
+        <h2 class="mb-3">{{ location['country'] }}</h2>
+        {% if location['name'] != location['country'] %}
+        <h2 class="mb-3">{{ location['city'] }}</h2>
+        {% endif %}
+        <table class="table table-border mx-auto bg-white" style="width: 500px;">
+            <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Night</th>
+                <th>Humidity</th>
+            </tr>
+            {% for row in data %}
+            <tr>
+                <th>{{ row['date'] }}</th>
+                <th>{{ row['day_temp'] }}°C</th>
+                <th>{{ row['night_temp'] }}°C</th>
+                <th>{{ row['humidity'] }}%</th>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="/" class="btn btn-primary btn-lg d-grid gap-2 mx-auto">Back to home page</a>
+    </div>
+</div>
+</body>
+</html>
