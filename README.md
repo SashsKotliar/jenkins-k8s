@@ -1,14 +1,24 @@
 **Jenkins pipeline in Kubernetes cluster.**
-1. [Create VPC](#create-vpc)
-2. [Create and configure EKS cluster in your VPC](#create-and-configure-eks-cluster-in-your-vpc)
-3. [Create persistent volume for Jenkins](#create-persistent-volume-for-jenkins)
-4. [Create Jenkins and Python app in their namespaces](#create-jenkins-and-python-app-in-their-namespaces)
-5. [Configure entry point to cluster](#configure-entry-point-to-cluster)
-6. [Configure Jenkins](#configure-jenkins)
-7. [Create and configure GitHub repository](#create-and-configure-github-repository)
-8. [Create a pipeline](#create-a-pipeline)
-9. [Project Flow Diagram](#project-flow-diagram)
-10. [Explanation about project folders and files](#explanation-about-project-folders-and-files)
+1. [Explanation about project folders and files](#explanation-about-project-folders-and-files)
+2. [Create VPC](#create-vpc)
+3. [Create and configure EKS cluster in your VPC](#create-and-configure-eks-cluster-in-your-vpc)
+4. [Create persistent volume for Jenkins](#create-persistent-volume-for-jenkins)
+5. [Create Jenkins and Python app in their namespaces](#create-jenkins-and-python-app-in-their-namespaces)
+6. [Configure entry point to cluster](#configure-entry-point-to-cluster)
+7. [Configure Jenkins](#configure-jenkins)
+8. [Create and configure GitHub repository](#create-and-configure-github-repository)
+9. [Create a pipeline](#create-a-pipeline)
+10. [Project Flow Diagram](#project-flow-diagram)
+
+## Explanation about project folders and files
+
+1. luster-config-files/: cluster configuration (deployments, services, ingress rules, persistent storage files, RBAC role)
+2. imageForAgent/: Dockerfile for agent jnlp image
+3. images/: screenshots of workflow
+4. weatherApp/: application python and html files
+5. Dockerfile - application dockerfile
+6. Jenkinsfile - pipeline
+7. requirements.txt - application dependencies
 
 ## Create VPC
 
@@ -125,16 +135,6 @@
 
 ![diagram](images/project-diagram.png)
 
-
-## Explanation about project folders and files
-
-1. luster-config-files/: cluster configuration (deployments, services, ingress rules, persistent storage files, RBAC role)
-2. imageForAgent/: Dockerfile for agent jnlp image
-3. images/: screenshots of workflow
-4. weatherApp/: application python and html files
-5. Dockerfile - application dockerfile
-6. Jenkinsfile - pipeline
-7. requirements.txt - application dependencies
 
     
 
