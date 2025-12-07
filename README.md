@@ -1,7 +1,16 @@
 **Jenkins pipeline in Kubernetes cluster.**
+1. [Create VPC](#create-vpc)
+2. [Create and configure EKS cluster in your VPC](#create-and-configure-eks-cluster-in-your-vpc)
+3. [Create persistent volume for Jenkins](#create-persistent-volume-for-jenkins)
+4. [Create Jenkins and Python app in their namespaces](#create-jenkins-and-python-app-in-their-namespaces)
+5. [Configure entry point to cluster](#configure-entry-point-to-cluster)
+6. [Configure Jenkins](#configure-jenkins)
+7. [Create and configure GitHub repository](#create-and-configure-github-repository)
+8. [Create a pipeline](#create-a-pipeline)
+9. [Project Flow Diagram](#project-flow-diagram)
+10. [Explanation about project folders and files](#explanation-about-project-folders-and-files)
 
-
-**Create VPC**
+## Create VPC
 
 1. Create vpc with 2 public and 2 private subnets, NAT gateway (regional) and Internet gateway, 2 routing tables.
 
@@ -13,7 +22,7 @@
     kubernetes.io/role/elb = 1 - tag public subnets.
 
 
-**Create and configure EKS cluster in your VPC**
+## Create and configure EKS cluster in your VPC
 
 1. Create EKS cluster: custom configuration, only private subnets to place ENIs in - so cluster's traffic stays in private network within the vpc.
 2. Create node group with 2 nodes - one for each private subnet.
@@ -24,15 +33,15 @@
     aws eks update-kubeconfig --name <cluster-name> --region <region>
 4. For creating and mounting volumes, nodes' role must contain this policy: AmazonEFSCSIDriverPolicy
 5. Create a namespace devops(for jenkins), build-env (for building image) and prod-env (for python app):
-     kubectl create namespace devops
-     kubectl create namespace build-env
-     kubectl create namespace prod-env
-     Check:
+     kubectl create namespace devops, 
+     kubectl create namespace build-env, 
+     kubectl create namespace prod-env, 
+     check:
 
 ![get_namespaces](images/img_3.png)
 
 
-**Create persistent volume for Jenkins**
+## Create persistent volume for Jenkins
 
 1. Create EFS in the cluster's vpc (for persistent storage for jenkins).
 2. Deploy EFS storage driver: 
@@ -43,7 +52,7 @@
     kubectl apply -f efs-pvc.yaml
 
 
-**Create Jenkins and Python app in their namespaces**
+## Create Jenkins and Python app in their namespaces
 
 1. Create Jenkins Deployment and service in devops namespace, apply them and check:
 
@@ -52,7 +61,7 @@
 2. Create python app Deployment and service in prov-env namespace, apply them and check as in example above.
 
 
-**Configure entry point to cluster**
+## Configure entry point to cluster
 
 1. Create ingress rule yaml for each service (Jenkins and Weather app).
 2. Apply them:
@@ -69,7 +78,7 @@
 ![cloudflare_dns_record](images/img_6.png)
 
 
-**Configure Jenkins**
+## Configure Jenkins
 
 1. In jenkins pod's logs look for a password for accessing jenkins:
     kubectl logs pod-name -n devops 
@@ -90,13 +99,13 @@
     Set it to run in privileged mode.
 
 
-**Create and configure GitHub repository**
+## Create and configure GitHub repository
 
 1. Create repository in github, configure ssh keys for cloning and pushing files, clone it to the local PC.
 2. In github configure a webhook with url: https://jenkins-k8s.skyb.boo
 
 
-**Create a pipeline**
+## Create a pipeline
 
 1. Create a new job pipeline, configure it to get GitHub hook trigger for GITScm polling.
     Define pipeline script from SCM.
@@ -112,9 +121,21 @@
     deploys it to prod-env namespace
 
 
-**Project Flow Diagram:**
+## Project Flow Diagram:
 
-![diagram](images/my-diagram.png)
+![diagram](images/project-diagram.png)
+
+
+## Explanation about project folders and files
+
+-cluster-config-files/: cluster configuration (deployments, services, ingress rules, persistent storage files, RBAC role)
+-imageForAgent/: Dockerfile for agent jnlp image
+-images/: screenshots of workflow
+-weatherApp/: application python and html files
+-Dockerfile - application dockerfile
+-Jenkinsfile - pipeline
+-requirements.txt - application dependencies
+
     
 
 
