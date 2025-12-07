@@ -65,8 +65,10 @@ spec:
     stage('Deploy') {
       steps {
         container('jnlp') {
-          sh 'kubectl version'
-          echo 'Deploying...'
+          sh """
+	    kubectl apply -f cluster-config-files/weather-deployment.yaml -n -prod-env
+	    kubectl rollout status deployment/weather-app -n prod-env
+	  """
         }
       }
     }
