@@ -45,10 +45,9 @@ metadata:
   namespace: prod-env
 subjects:
   - kind: ServiceAccount
-    name: jenkins-sa
-    namespace: devops
+    name: default
+    namespace: build-env
 roleRef:
   kind: Role
   name: jenkins-role-deploy
   apiGroup: rbac.authorization.k8s.io
-
