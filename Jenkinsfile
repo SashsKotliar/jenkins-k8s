@@ -3,14 +3,14 @@ pipeline {
     label "jenkins-builder" 
   } 
   stages { 
-    stage('Build') { 
+    stage('Build and Push to Dockerhub') { 
       steps { 
-	sh 'docker build -t sashak9/webapp:latest .'
-      } 
-    } 
-    stage('Push to dockerhub') { 
-      steps { 
-        echo 'Push to docker hub..' 
+	script {
+	  docker.withRegistry('', 'dockerhub-credentials') {
+	    def image = docker.build("sashak9/webapp:latest")
+	    image.push()
+	  }  
+	}
       } 
     } 
     stage('Deploy') { 
