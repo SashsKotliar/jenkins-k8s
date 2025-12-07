@@ -14,8 +14,6 @@ spec:
     env:
       - name: DOCKER_TLS_CERTDIR
         value: ""
-    command:
-      - dockerd-entrypoint.sh
     tty: true
     volumeMounts:
       - name: docker-data
@@ -30,6 +28,7 @@ spec:
 """
     }
   }
+
   stages {
     stage('Checkout') {
       steps {
@@ -48,6 +47,12 @@ spec:
             passwordVariable: 'DOCKER_PASS'
           )]) {
             sh '''
+              # Wait for Docker daemon to start
+              until docker info >/dev/null 2>&1; do
+                echo "Waiting for Docker daemon..."
+                sleep 1
+              done
+
               echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
               docker build -t sashak9/webapp:latest .
               docker push sashak9/webapp:latest
@@ -67,4 +72,3 @@ spec:
     }
   }
 }
-
