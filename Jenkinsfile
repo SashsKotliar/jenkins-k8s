@@ -5,7 +5,8 @@ pipeline {
   stages {  
     stage('Build and Push to Dockerhub') { 
       steps { 
-        sh 'kubectl version' 
+        sh 'kubectl version'
+      } 
     } 
     stage('Deploy') { 
       steps { 
