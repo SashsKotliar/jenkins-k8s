@@ -66,7 +66,7 @@ spec:
       steps {
         container('jnlp') {
           sh """
-	    kubectl apply -f cluster-config-files/weather-deployment.yaml -n prod-env
+	    kubectl set image deployment/weather-app weather=sashak9/webapp:latest -n prod-env
 	    kubectl rollout status deployment/weather-app -n prod-env
 	  """
         }
