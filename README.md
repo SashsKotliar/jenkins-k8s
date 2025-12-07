@@ -125,7 +125,7 @@
 
 2. Make a folder with a python app, make requirements file for it, and a dockerfile that builds image.
 3. Create credentials for jenkins to push image to dockerhub from a pipeline.
-4. Write a pipeline in a Jenkinsfile that: builds image via sidecar container, pushes it to dockerhub, deploys it to prod-env namespace
+4. Write a pipeline in a Jenkinsfile that: builds image via sidecar container, pushes it to dockerhub, deploys it to prod-env namespace.
 
 
 ## Project Flow Diagram:
