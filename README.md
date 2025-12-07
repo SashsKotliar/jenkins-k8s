@@ -12,13 +12,14 @@
 
 ## Explanation about project folders and files
 
-1. luster-config-files/: cluster configuration (deployments, services, ingress rules, persistent storage files, RBAC role)
-2. imageForAgent/: Dockerfile for agent jnlp image
-3. images/: screenshots of workflow
-4. weatherApp/: application python and html files
-5. Dockerfile - application dockerfile
-6. Jenkinsfile - pipeline
-7. requirements.txt - application dependencies
+1. [cluster-config-files/](cluster-config-files/) — EKS configuration (Jenkins + web app deployments, services, ingress, PVC, StorageClass, RBAC)
+2. [imageForAgent/](imageForAgent/) — Dockerfile for Jenkins JNLP build agent with kubectl
+3. [images/](images/) — Screenshots for README
+4. [weatherApp/](weatherApp/) — Python app code + HTML templates
+5. [Dockerfile](Dockerfile) — Web application Dockerfile
+6. [Jenkinsfile](Jenkinsfile) — CI/CD pipeline script 
+7. [requirements.txt](requirements.txt) — Python dependencies
+
 
 ## Create VPC
 
