@@ -28,8 +28,8 @@
 ![public_subnet](images/img_1.png)
 
 2. Add tags to subnets so EKS can know where to place load balancers:
-    kubernetes.io/cluster/cluster-name = shared - tag private and public subnets.
-    kubernetes.io/role/elb = 1 - tag public subnets.
+    1. kubernetes.io/cluster/cluster-name = shared - tag private and public subnets.
+    2. kubernetes.io/role/elb = 1 - tag public subnets.
 
 
 ## Create and configure EKS cluster in your VPC
@@ -43,10 +43,10 @@
     aws eks update-kubeconfig --name <cluster-name> --region <region>
 4. For creating and mounting volumes, nodes' role must contain this policy: AmazonEFSCSIDriverPolicy
 5. Create a namespace devops(for jenkins), build-env (for building image) and prod-env (for python app):
-     kubectl create namespace devops, 
-     kubectl create namespace build-env, 
-     kubectl create namespace prod-env, 
-     check:
+     1. kubectl create namespace devops 
+     2. kubectl create namespace build-env 
+     3. kubectl create namespace prod-env
+     4. check:
 
 ![get_namespaces](images/img_3.png)
 
@@ -75,8 +75,8 @@
 
 1. Create ingress rule yaml for each service (Jenkins and Weather app).
 2. Apply them:
-    kubectl apply -f jenkins-ingress.yaml
-    kubectl apply -f weather-ingress.yaml
+    1. kubectl apply -f jenkins-ingress.yaml
+    2. kubectl apply -f weather-ingress.yaml
 3. Using aws documentation, install eksctl, helm CLI.
     Install role so ingress controller could provision an ALB dynamically.
     Create a service account and map it to created role, so it could reach aws CLI.
@@ -125,10 +125,7 @@
 
 2. Make a folder with a python app, make requirements file for it, and a dockerfile that builds image.
 3. Create credentials for jenkins to push image to dockerhub from a pipeline.
-4. Write a pipeline in a Jenkinsfile that:
-    builds image via sidecar container
-    pushes it to dockerhub
-    deploys it to prod-env namespace
+4. Write a pipeline in a Jenkinsfile that: builds image via sidecar container, pushes it to dockerhub, deploys it to prod-env namespace
 
 
 ## Project Flow Diagram:
