@@ -10,22 +10,22 @@ spec:
   - name: docker
     image: docker:24-dind
     securityContext:
-      privileged: true      # required for DinD
+      privileged: true
     env:
       - name: DOCKER_TLS_CERTDIR
         value: ""
-    volumeMounts:
-      - name: dockersock
-        mountPath: /var/run/docker.sock
     command:
-      - cat
+      - dockerd-entrypoint.sh
     tty: true
+    volumeMounts:
+      - name: docker-data
+        mountPath: /var/lib/docker
   - name: jnlp
     image: sashak9/pod-agent:latest
     tty: true
     workingDir: /home/jenkins
   volumes:
-    - name: dockersock
+    - name: docker-data
       emptyDir: {}
 """
     }
@@ -67,3 +67,4 @@ spec:
     }
   }
 }
+
