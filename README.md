@@ -103,11 +103,8 @@
 5. In jenkins to Clouds, create new cloud Kubernetes. Give it a name.
     Kubernetes namespace: where we will run agents (build-env).
     Set jenkins url to: http://jenkins.devops.svc.cluster.local:8080 (service.namespace.svc.cluster.local:8080).
-6. Configure pod templates: give an agent a name, set namespace to build-env, give agent a label.
-    Add container, give it name jnlp - so it will override a default container running in a pod.
-    Set image to image you created and pushed to dockerhub.
-    Set home directory to: /home/jenkins
-    Set it to run in privileged mode.
+6. Configure inline pod configuration with it's containers. 
+    Set one container's image to image you created and pushed to dockerhub, and second container's image to image that runs Docker daemon inside the pod for building docker image and pushing it to the registry.
 
 
 ## Create and configure GitHub repository
