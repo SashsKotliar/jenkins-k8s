@@ -1,58 +1,56 @@
 pipeline {
   agent {
     kubernetes {
-      defaultContainer 'jnlp'
+      defaultContainer 'docker'
       yaml """
 apiVersion: v1
 kind: Pod
 spec:
   containers:
+  - name: docker
+    image: docker:24-dind
+    securityContext:
+      privileged: true      # required for DinD
+    env:
+      - name: DOCKER_TLS_CERTDIR
+        value: ""
+    volumeMounts:
+      - name: dockersock
+        mountPath: /var/run/docker.sock
+    command:
+      - cat
+    tty: true
   - name: jnlp
     image: sashak9/pod-agent:latest
-    workingDir: /home/jenkins
     tty: true
-    resources:
-      requests:
-        memory: "512Mi"
-        cpu: "500m"
-      limits:
-        memory: "1Gi"
-        cpu: "1"
-  - name: kaniko
-    image: gcr.io/kaniko-project/executor:latest
-    user: root
-    tty: true
-    resources:
-      requests:
-        memory: "512Mi"
-        cpu: "500m"
-      limits:
-        memory: "1Gi"
-        cpu: "1"
     workingDir: /home/jenkins
+  volumes:
+    - name: dockersock
+      emptyDir: {}
 """
     }
   }
   stages {
-    stage ('Build and Push') {
+    stage('Checkout') {
       steps {
-        container('kaniko') {
+        container('jnlp') {
+          checkout scm
+        }
+      }
+    }
+
+    stage('Build & Push Docker Image') {
+      steps {
+        container('docker') {
           withCredentials([usernamePassword(
-            credentialsId: 'dockerhub-credentials', 
-            usernameVariable: 'DOCKER_USER', 
+            credentialsId: 'dockerhub-credentials',
+            usernameVariable: 'DOCKER_USER',
             passwordVariable: 'DOCKER_PASS'
           )]) {
             sh '''
-              mkdir -p /home/jenkins/.docker
-              echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(echo -n $DOCKER_USER:$DOCKER_PASS | base64)\"}}}" \
-                > /home/jenkins/.docker/config.json
-
-              /kaniko/executor \
-                --dockerfile=${WORKSPACE}/Dockerfile \
-                --context=${WORKSPACE} \
-                --destination="sashak9/webapp:latest" \
-                --docker-config=/home/jenkins/.docker \
-                --verbosity=info
+              echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+              docker build -t sashak9/webapp:latest .
+              docker push sashak9/webapp:latest
             '''
           }
         }
