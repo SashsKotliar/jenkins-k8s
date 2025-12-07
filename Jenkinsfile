@@ -2,25 +2,14 @@ pipeline {
   agent { 
     label "jenkins-builder" 
   } 
-  stages {
-    stage('Start Docker') {
-      steps {
-        sh '''
-          dockerd &                   # start Docker daemon in background
-          while(! docker info >/dev/null 2>&1); do
-            echo "Waiting for Docker daemon..."
-            sleep 1
-          done
-        '''
-      }
-    } 
+  stages {  
     stage('Build and Push to Dockerhub') { 
       steps { 
-	script {
-	  docker.withRegistry('', 'dockerhub-credentials') {
-	    def image = docker.build("sashak9/webapp:latest")
-	    image.push()
-	  }  
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+	  sh """
+	    echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"username\":\"$DOCKER_USER\",\"password\":\"$DOCKER_PASS\"}}}" > /home/jenkins/.docker/config.json
+            /kaniko-executor --dockerfile=Dockerfile --context=\$(pwd) --destination=sashak9/webapp:latest 
+       	  """
 	}
       } 
     } 
