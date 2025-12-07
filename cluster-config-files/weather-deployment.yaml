@@ -8,6 +8,11 @@ spec:
   selector:
     matchLabels:
       app: weather
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   template:
     metadata:
       labels:
@@ -15,6 +20,14 @@ spec:
     spec:
       containers:
         - name: weather
-          image: sashak9/weather-web:latest
+          image: sashak9/webapp:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 5000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
