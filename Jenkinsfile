@@ -67,7 +67,8 @@ spec:
         container('jnlp') {
           sh """
 	    kubectl patch deployment weather-app -n prod-env \
-  	        -p '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'"$(date +%Y-%m-%dT%H:%M:%S%Z)"'"}}}}}'
+              -p '{"spec":{"template":{"metadata":{"annotations":{"kubectl.kubernetes.io/restartedAt":"'"\$(date +%Y-%m-%dT%H:%M:%S%Z)"'"}}}}}'
+	    
 	    kubectl set image deployment/weather-app weather=sashak9/webapp:latest -n prod-env
 	    kubectl rollout status deployment/weather-app -n prod-env
 	  """
