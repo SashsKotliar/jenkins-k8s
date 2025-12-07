@@ -21,8 +21,6 @@ spec:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
     user: root
-    command:
-      - cat
     tty: true
     resources:
       requests:
